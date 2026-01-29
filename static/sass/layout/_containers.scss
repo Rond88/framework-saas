@@ -1,34 +1,33 @@
-$breakpoints: (
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px,
-);
-.container-base {
+/* Containers */
+@use "../base/variables" as vars;
+%container-base-extra{
+    @extend %container-base;
+    max-width: calc(100% - 15px);
+}
+%container-base {
   width: 100%;
   padding-inline: 15px;
   margin-left: auto;
   margin-right: auto;
 }
+@mixin container-media($size) {
+  @media (width >= $size) {
+    max-width: $size;
+  }
+}
 .container {
-  @extend .container-base;
-  max-width: calc(100% - 15px);
-  @each $breakpoint, $size in $breakpoints {
-    @media (width >= $size) {
-      max-width: $size;
-    }
+  @extend %container-base-extra;
+
+  @each $breakpoint, $size in vars.$breakpoints {
+    @include container-media($size);
   }
 }
 .container-fluid {
-  @extend .container-base;
-  max-width: calc(100% - 15px);
+  @extend %container-base-extra;
 }
-@each $breakpoint, $size in $breakpoints {
+@each $breakpoint, $size in vars.$breakpoints {
   .container-#{$breakpoint} {
-    @extend .container-base;
-    max-width: calc(100% - 15px);
-    @media (width >= $size) {
-      max-width: $size;
-    }
+    @extend %container-base-extra;
+    @include container-media($size);
   }
 }
